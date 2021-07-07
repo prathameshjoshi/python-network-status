@@ -5,12 +5,15 @@ from datetime import datetime
 # Check internet connection with ping
 def is_connected():
     try:
+        countdown_start = int(time.time() * 1000)
         socket.create_connection(("8.8.8.8", 53), timeout=5)
-        return True
+        countdown_end = int(time.time() * 1000)
+        countdown = countdown_end - countdown_start
+        return True, countdown
 
     except OSError:
         pass
-    return False
+    return False, False
 
 # Get current time
 def current_time():
@@ -20,8 +23,8 @@ def current_time():
 
 while True:
     time.sleep(2)
-    check = is_connected()
+    check, countdown = is_connected()
     if check != True:
         print('{} : Disconnected'.format(current_time()))
     else:
-        print('{} : Connected'.format(current_time()))
+        print('{} : Connected {} ms'.format(current_time(), countdown))
