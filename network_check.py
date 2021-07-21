@@ -1,8 +1,10 @@
 import socket
 import time
-from datetime import datetime
 
-# Check internet connection with ping
+from rich.console import Console
+console = Console()
+
+
 def is_connected():
     try:
         countdown_start = int(time.time() * 1000)
@@ -15,16 +17,11 @@ def is_connected():
         pass
     return False, False
 
-# Get current time
-def current_time():
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    return current_time
-
-while True:
-    time.sleep(2)
-    check, countdown = is_connected()
-    if check != True:
-        print('{} : Disconnected'.format(current_time()))
-    else:
-        print('{} : Connected {} ms'.format(current_time(), countdown))
+if __name__ == '__main__':
+    while True:
+        time.sleep(2)
+        check, countdown = is_connected()
+        if check != True:
+            console.log(f'Disconnected', style="bold red")
+        else:
+            console.log(f'Connected {countdown} ms', style='bold green')
